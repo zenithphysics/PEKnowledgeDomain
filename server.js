@@ -1,14 +1,37 @@
 const express = require('express')
+const exphbs = require('express-handlebars')
+const path = require('path')
+const mongoose = require('mongoose')
+const keys = require('./config/keys')
+const logger = require('morgan')
+const session = require('express-session')
+const adminRoutes = require('./routes/admin')
+const bodyParser = require('body-parser')
 const app = express()
 
 const SERVER_PORT = process.env.PORT || 3000
 
 
-app.get('/' , (req,res)=> {
-  res.send('checking fine!!')
+app.engine('handlebars' , exphbs({
+    defaultLayout:'main'
+}))
+
+app.set('view engine' ,'handlebars')
+
+app.use(express.static(path.join(__dirname , 'public')))
+
+
+
+mongoose.connect(keys.mongodb.dbURI,{useUnifiedTopology: true,useNewUrlParser: true}).then(()=>console.log('connected to mongodb'))
+.catch((err)=> {
+ console.log(err)
 })
 
+app.get('/' , (req,res)=> {
+   res.render('Subject/addsubject')
+})
 
+app.use('/admin' , adminRoutes)
 
 
 

@@ -9,6 +9,9 @@ const kdChapterSchema = new Schema({
     title:{
         type:String
     },
+    chapterTitle:{
+      type:String
+    },
     description:{
         type:String
     },

@@ -7,7 +7,7 @@ const kdSubjectSchema = new Schema({
     },
     title:{
         type:String
-    },
+    }, 
     description:{
         type:String
     },
