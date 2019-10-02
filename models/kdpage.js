@@ -9,10 +9,10 @@ const kdPageSchema = new Schema({
         type:Array
     },
     topic_id:{
-        type: int
+        type: String
     }
 })
 
-const KDPAGE = mongoose.model('kdtopic' , kdPageSchema)
+const KDPAGE = mongoose.model('kdpage' , kdPageSchema)
 
 module.exports = KDPAGE

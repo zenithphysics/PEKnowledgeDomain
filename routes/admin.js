@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const Subject = require('../models/kdsubject')
 const Chapter = require('../models/kdchapter')
 const Topic = require('../models/kdtopic')
+const Page = require('../models/kdpage')
+
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
@@ -80,5 +82,17 @@ router.post('/addtopics' , (req,res)=> {
         })
 })
 
-
+router.post('/addpages' , (req,res)=> {
+    console.log(req.body.topicTitle)
+    const newPage = {
+       topic_id:req.body.topicTitle
+    }
+    new Page(newPage).save()
+    .then(page=>{
+       res.status(200).json(page)
+    })
+    .catch(err=>{
+       res.status(400).json(err)
+    })
+})
 module.exports = router
