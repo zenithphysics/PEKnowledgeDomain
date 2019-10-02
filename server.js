@@ -7,6 +7,7 @@ const logger = require('morgan')
 const session = require('express-session')
 const adminRoutes = require('./routes/admin')
 const bodyParser = require('body-parser')
+const loginRoutes = require('./routes/login')
 const app = express()
 
 const SERVER_PORT = process.env.PORT || 3000
@@ -31,8 +32,12 @@ app.get('/' , (req,res)=> {
    res.render('Subject/addsubject')
 })
 
-app.use('/admin' , adminRoutes)
+app.get('/loginadmin' , (req,res)=> {
+   res.render('admin/login')
+})
 
+app.use('/admin' , adminRoutes)
+app.use('/login' , loginRoutes)
 
 
 
