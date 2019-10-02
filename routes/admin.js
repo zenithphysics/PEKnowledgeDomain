@@ -2,6 +2,7 @@ const router = require('express').Router()
 const bodyParser = require('body-parser')
 const Subject = require('../models/kdsubject')
 const Chapter = require('../models/kdchapter')
+const Topic = require('../models/kdtopic')
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
@@ -53,7 +54,31 @@ router.post('/addchapters' , (req,res)=> {
         })
   })
 
-
+router.post('/addtopics' , (req,res)=> {
+        Chapter.findOne({chapterTitle:req.body.chapterTitle})
+        .then(chapter=> {
+         if (!chapter) {
+            res.status(404).json({ err: "No Chapter found" });
+        }
+         const newTopic ={
+            title:req.body.chapterTitle,
+            topic_title:req.body.topic_title,
+            description:req.body.topicDescription,
+            chapter_id:chapter._id
+         }
+         new Topic(newTopic).save()
+         .then(topic=> {
+            Topic.findOne({title:req.body.chapterTitle})
+            .then(topic=> {
+               Chapter.findOneAndUpdate({chapterTitle:req.body.chapterTitle},{ $push: { Topics: topic._id }},{new:true})
+               .then(data => res.json(data))
+               .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err));
+         })
+         .catch(err => console.log(err));
+        })
+})
 
 
 module.exports = router
