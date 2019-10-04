@@ -6,7 +6,7 @@ const kdChapterSchema = new Schema({
     id:{
         type: Schema.Types.ObjectId
     },
-    title:{
+    subject_title:{
         type:String
     },
     chapterTitle:{

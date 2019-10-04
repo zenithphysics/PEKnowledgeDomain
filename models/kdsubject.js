@@ -5,7 +5,7 @@ const kdSubjectSchema = new Schema({
     id:{
         type: Schema.Types.ObjectId
     },
-    title:{
+    subject_title:{
         type:String
     }, 
     description:{
