@@ -8,6 +8,7 @@ const kdSectionSchema = new Schema({
     title:{
         type:String
     }
+    
 })
 
 const KDSECTION = mongoose.model('kdsection' , kdSectionSchema)

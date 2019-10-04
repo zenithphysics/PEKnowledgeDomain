@@ -57,6 +57,7 @@ router.post('/addchapters' , (req,res)=> {
   })
 
 router.post('/addtopics' , (req,res)=> {
+   console.log(req.body.topicTitle)
         Chapter.findOne({chapterTitle:req.body.chapterTitle})
         .then(chapter=> {
          if (!chapter) {
@@ -64,7 +65,7 @@ router.post('/addtopics' , (req,res)=> {
         }
          const newTopic ={
             title:req.body.chapterTitle,
-            topic_title:req.body.topic_title,
+            topic_title:req.body.topicTitle,
             description:req.body.topicDescription,
             chapter_id:chapter._id
          }

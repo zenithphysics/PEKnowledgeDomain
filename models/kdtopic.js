@@ -12,7 +12,7 @@ const kdTopicSchema = new Schema({
         type:String
     },
     topic_title:{
-    type:String
+          type:String
     },
     chapter_id:{
      type:String
