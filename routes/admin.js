@@ -4,11 +4,9 @@ const Subject = require("../models/kdsubject");
 const Chapter = require("../models/kdchapter");
 const Topic = require("../models/kdtopic");
 const Page = require("../models/kdpage");
-const jwt = require("jsonwebtoken");
-const Admin = require("../models/admin");
 
-/*--------------joi validation schema-----------*/
-const loginSchema = require("../joi_schema/login");
+//controllers
+const { signUpAdmin, loginAdmin } = require("../controllers/Admin");
 
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
@@ -22,34 +20,10 @@ router.use(bodyParser.json());
 
 //----------------starting with all the post routes with here-----------------------//
 
+router.post("/signup", signUpAdmin);
+
 //---login route for admin-----------//
-router.post("/login", (req, res) => {
-  const { error, value } = loginSchema.validate(req.body);
-
-  if (error) {
-    res.status(400).json({ message: error.details[0].message });
-  } else {
-    const admin = {
-      username: value.email,
-      password: value.password
-    };
-
-    //here u need to add logic for login then send token after login successfully done
-    if (admin.username === "xyz@gmail.com" && admin.password === "123456") {
-      //for testing purpose
-      jwt.sign({ admin: admin }, jwtSecret.jwtKey, (err, token) => {
-        localStorage.setItem("loginToken", token);
-        res.header("access-token", token);
-        res.status(200).json({
-          "access-token": token,
-          message: "Login Success",
-          status: 200
-        });
-      });
-    }
-    //need to implement login fail logic
-  }
-});
+router.post("/login", loginAdmin);
 
 router.get("/logout", (req, res) => {
   localStorage.removeItem("loginToken");
