@@ -3,11 +3,9 @@ const exphbs = require('express-handlebars')
 const path = require('path')
 const mongoose = require('mongoose')
 const keys = require('./config/keys')
-const logger = require('morgan')
-const session = require('express-session')
 const adminRoutes = require('./routes/admin')
 const bodyParser = require('body-parser')
-
+const jwt = require('jsonwebtoken')
 const app = express()
 
 const SERVER_PORT = process.env.PORT || 3000
@@ -32,17 +30,8 @@ app.get('/' , (req,res)=> {
    res.render('Subject/addsubject')
 })
 
-app.get('/loginadmin' , (req,res)=> {
-   res.render('admin/login')
-})
 
 app.use('/admin' , adminRoutes)
-
-
-
-
-
-
 
 
 

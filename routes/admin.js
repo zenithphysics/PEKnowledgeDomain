@@ -4,30 +4,55 @@ const Subject = require('../models/kdsubject')
 const Chapter = require('../models/kdchapter')
 const Topic = require('../models/kdtopic')
 const Page = require('../models/kdpage')
-
+const jwt = require('jsonwebtoken')
+const Admin = require('../models/admin')
 router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json())
 
 
 
-router.get('/' , (req,res)=> {
-   res.send('this is the admin page!!!')
-})
-//----------------starting with all the post routes with here-----------------------//
-//----add a subject---------------//
-router.post('/addsubject' , (req,res)=> {
-   console.log(req.body)
-    // console.log(req.body.subjectDescription)
 
-     const newSubject = {
-        subject_title:req.body.subjectTitle,
-        description:req.body.subjectDescription
-     }
-     new Subject(newSubject).save().then((newSubject)=> {
-            res.status(200).json(newSubject)
-     }).catch((err)=> {
-        res.status(400).json(err)
-     })
+//----------------starting with all the post routes with here-----------------------//
+
+//---login route for admin-----------//
+router.post('/login' , (req,res)=> {
+   console.log(req.body)
+   const admin = {
+      username:req.body.email,
+      password:req.body.password
+   }
+   jwt.sign({admin:admin}, 'psaetchesrleat' , (err,token)=> {
+        res.json({
+           token:token
+        })
+   })
+})
+
+//----add a subject---------------//
+router.post('/addsubject' ,verifyToken ,(req,res)=> {
+   jwt.verify(req.token , 'psaetchesrleat' , (err,authData)=> {
+        if(err) {
+               res.status(403).json('forbidden')
+               }
+         else {
+           
+            console.log(req.body)
+             console.log(req.body.subjectDescription)
+        
+             const newSubject = {
+              subject_title:req.body.subjectTitle,
+               description:req.body.subjectDescription
+             }
+             new Subject(newSubject).save().then((newSubject)=> {
+                    res.status(200).json(newSubject)
+             }).catch((err)=> {
+                res.status(400).json(err)
+             })
+
+         }      
+
+   })
+  
 })
 
 //-------------add chapters-------------------//
@@ -120,6 +145,13 @@ router.post('/addsection' , (req,res)=> {
 
 
 //-----------starting with all the get routes from here--------------------------//
+
+//-------------------get request for admin login---------------------------------//
+router.get('/login' , (req,res)=> {
+        res.render('index/login')
+})
+
+
 //to get the list of all the KDsubjects stored in the database
 router.get('/subjects' , (req,res)=> {
      Subject.find()
@@ -154,5 +186,16 @@ router.get('/topics/:chaptertitle' , (req,res)=> {
     })
 })
 
+function verifyToken(req,res,next) {
+        const peheader = req.headers['authorization']
+        if(typeof peheader !== 'undefined') {
+              const pe = peheader.split(' ')
+              const peToken = pe[1]
+              req.token = peToken
+              next()
+        } else {
+                 res.status(403).json('Sorry you are Forbidden to do so!!')
+        }
+}
 
 module.exports = router
