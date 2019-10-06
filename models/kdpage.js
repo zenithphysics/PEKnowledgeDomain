@@ -8,12 +8,18 @@ const kdPageSchema = new Schema({
     sections:{
         type:Array
     },
+    topic_title:{
+     type:String
+    },
     topic_id:{
         type: String
     },
     page_type:{
         type:String
-      }
+    },
+    page_title:{
+        type:String
+    }
 })
 
 const KDPAGE = mongoose.model('kdpage' , kdPageSchema)

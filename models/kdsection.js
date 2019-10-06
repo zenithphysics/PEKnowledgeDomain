@@ -5,10 +5,13 @@ const kdSectionSchema = new Schema({
     id:{
         type: Schema.Types.ObjectId
     },
-    title:{
+    section_title:{
         type:String
     },
     section_type:{
+        type:String
+    },
+    topic_title:{
         type:String
     }
     

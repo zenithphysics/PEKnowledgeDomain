@@ -88,18 +88,36 @@ router.post('/addtopics' , (req,res)=> {
 //---------------add pages to topics----------------------//
 router.post('/addpages' , (req,res)=> {
     console.log(req.body.topicTitle)
-    const newPage = {
-       topic_id:req.body.topicTitle
-       
-    }
-    new Page(newPage).save()
-    .then(page=>{
-       res.status(200).json(page)
-    })
-    .catch(err=>{
-       res.status(400).json(err)
-    })
+    Topic.findOne({topic_title:req.body.topicTitle})
+    .then(topics => {
+      if (!topics) {
+         res.status(404).json({ err: "No Chapter found" });
+     }
+     const newPage = { 
+      page_type:req.body.page_type,
+      topic_title:req.body.topicTitle,
+      topic_id:topics._id,
+      page_title:req.body.page_title
+      }
+      new Page(newPage).save()
+      .then(page=> {
+         Page.findOne({page_title:req.body.title})
+         .then(page => {
+            Topic.findOneAndUpdate({topic_title:req.body.topicTitle},{ $push: { Pages: page._id }},{new:true})
+            .then(data => res.json(data))
+               .catch(err => console.log(err));
+         })
+         .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+    }) 
 })
+
+//----------------add sections to pages-----------------------//
+router.post('/addsection' , (req,res)=> {
+      console.log(req.body)
+})
+
 
 //-----------starting with all the get routes from here--------------------------//
 //to get the list of all the KDsubjects stored in the database
