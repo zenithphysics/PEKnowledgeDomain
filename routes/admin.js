@@ -90,6 +90,7 @@ router.post('/addpages' , (req,res)=> {
     console.log(req.body.topicTitle)
     const newPage = {
        topic_id:req.body.topicTitle
+       
     }
     new Page(newPage).save()
     .then(page=>{

@@ -7,6 +7,9 @@ const kdSectionSchema = new Schema({
     },
     title:{
         type:String
+    },
+    section_type:{
+        type:String
     }
     
 })

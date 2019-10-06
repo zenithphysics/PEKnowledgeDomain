@@ -10,7 +10,10 @@ const kdPageSchema = new Schema({
     },
     topic_id:{
         type: String
-    }
+    },
+    page_type:{
+        type:String
+      }
 })
 
 const KDPAGE = mongoose.model('kdpage' , kdPageSchema)
