@@ -6,7 +6,6 @@ const Topic = require("../models/kdtopic");
 const Page = require("../models/kdpage");
 const jwt = require("jsonwebtoken");
 const Admin = require("../models/admin");
-const joi = require("joi");
 
 /*--------------joi validation schema-----------*/
 const loginSchema = require("../joi_schema/login");
@@ -25,7 +24,7 @@ router.use(bodyParser.json());
 
 //---login route for admin-----------//
 router.post("/login", (req, res) => {
-  const { error, value } = joi.validate(req.body, loginSchema);
+  const { error, value } = loginSchema.validate(req.body);
 
   if (error) {
     res.status(400).json({ message: error.details[0].message });
@@ -48,6 +47,7 @@ router.post("/login", (req, res) => {
         });
       });
     }
+    //need to implement login fail logic
   }
 });
 
