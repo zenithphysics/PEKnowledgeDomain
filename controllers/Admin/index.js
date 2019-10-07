@@ -1,5 +1,9 @@
 const bcrypt = require("bcryptjs");
 const Admin = require("../../models/admin");
+const Subject = require("../../models/kdsubject");
+const Chapter = require("../../models/kdchapter");
+const Topic = require("../../models/kdtopic");
+const Page = require("../../models/kdpage");
 const jwt = require("jsonwebtoken");
 
 /*--------------joi validation schema-----------*/
@@ -66,4 +70,150 @@ exports.loginAdmin = async (req, res, next) => {
     }
     //need to implement login fail logic
   }
+};
+
+//-----add subject function-----------//
+exports.addSubject = (req, res) => {
+  jwt.verify(req.token, jwtSecret.jwtKey, (err, authData) => {
+    if (err) {
+      res.status(403).json("forbidden");
+    } else {
+      console.log(req.body);
+      console.log(req.body.subjectDescription);
+
+      const newSubject = {
+        subject_title: req.body.subjectTitle,
+        description: req.body.subjectDescription
+      };
+      new Subject(newSubject)
+        .save()
+        .then(newSubject => {
+          res.status(200).json(newSubject);
+        })
+        .catch(err => {
+          res.status(400).json(err);
+        });
+    }
+  });
+};
+
+//-----------add chapter function---------------//
+exports.addChapter = (req, res) => {
+  //console.log(req.body)
+  Subject.findOne({ subject_title: req.body.subjectTitle }).then(subject => {
+    if (!subject) {
+      res.status(404).json({ err: "No Subject found!!!" });
+    }
+    const newChapter = {
+      subject_title: req.body.subjectTitle,
+      chapterTitle: req.body.chapterTitle,
+      description: req.body.chapterDescription,
+      subject_id: subject._id
+    };
+    new Chapter(newChapter)
+      .save()
+      .then(chapter => {
+        Chapter.findOne({ subject_title: req.body.subjectTitle })
+          .then(chapter => {
+            Subject.findOneAndUpdate({ subject_title: req.body.subjectTitle }, { $push: { Chapters: chapter._id } }, { new: true })
+              .then(data => res.json(data))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  });
+};
+
+//------------add topics function---------------//
+exports.addTopic = (req, res) => {
+  console.log(req.body.topicTitle);
+  Chapter.findOne({ chapterTitle: req.body.chapterTitle }).then(chapter => {
+    if (!chapter) {
+      res.status(404).json({ err: "No Chapter found" });
+    }
+    const newTopic = {
+      title: req.body.chapterTitle,
+      topic_title: req.body.topicTitle,
+      description: req.body.topicDescription,
+      chapter_id: chapter._id
+    };
+    new Topic(newTopic)
+      .save()
+      .then(topic => {
+        Topic.findOne({ title: req.body.chapterTitle })
+          .then(topic => {
+            Chapter.findOneAndUpdate({ chapterTitle: req.body.chapterTitle }, { $push: { Topics: topic._id } }, { new: true })
+              .then(data => res.json(data))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  });
+};
+
+//-----------------add pages function--------------------//
+exports.addPage = (req, res) => {
+  console.log(req.body.topicTitle);
+  Topic.findOne({ topic_title: req.body.topicTitle }).then(topics => {
+    if (!topics) {
+      res.status(404).json({ err: "No Chapter found" });
+    }
+    const newPage = {
+      page_type: req.body.page_type,
+      topic_title: req.body.topicTitle,
+      topic_id: topics._id,
+      page_title: req.body.page_title
+    };
+    new Page(newPage)
+      .save()
+      .then(page => {
+        Page.findOne({ page_title: req.body.title })
+          .then(page => {
+            Topic.findOneAndUpdate({ topic_title: req.body.topicTitle }, { $push: { Pages: page._id } }, { new: true })
+              .then(data => res.json(data))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
+  });
+};
+
+//--------------------add sections function---------------//
+exports.addSection = (req, res) => {
+  console.log(req.body);
+  //login is still needed to be implemented//
+};
+
+//----------------get all subjects in database--------------//
+exports.getSubjects = (req, res) => {
+  Subject.find()
+    .then(kdsubjects => {
+      res.status(200).json(kdsubjects);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//----------------get all chapters in dataabse--------------//
+exports.getChapters = (req, res) => {
+  Chapter.find({ subject_title: req.params.subjecttitle })
+    .then(chapters => {
+      res.status(200).json(chapters);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//---------------get all topics in the database------------//
+exports.getTopics = (req, res) => {
+  Topic.find({ title: req.params.chaptertitle })
+    .then(topics => {
+      res.status(200).json(topics);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
 };

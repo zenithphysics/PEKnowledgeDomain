@@ -1,22 +1,21 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
 const kdSectionSchema = new Schema({
-    id:{
-        type: Schema.Types.ObjectId
-    },
-    section_title:{
-        type:String
-    },
-    section_type:{
-        type:String
-    },
-    topic_title:{
-        type:String
-    }
-    
-})
+  id: {
+    type: Schema.Types.ObjectId
+  },
+  section_title: {
+    type: String
+  },
+  section_type: {
+    type: String
+  },
+  topic_title: {
+    type: String
+  }
+});
 
-const KDSECTION = mongoose.model('kdsection' , kdSectionSchema)
+const KDSECTION = mongoose.model("kdsection", kdSectionSchema);
 
-module.exports = KDSECTION
+module.exports = KDSECTION;
