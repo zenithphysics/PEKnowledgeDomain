@@ -6,7 +6,7 @@ const Topic = require("../models/kdtopic");
 const Page = require("../models/kdpage");
 
 //controllers
-const { signUpAdmin, loginAdmin } = require("../controllers/Admin");
+const { signUpAdmin, loginAdmin, addSubject } = require("../controllers/Admin");
 
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
@@ -35,29 +35,7 @@ router.get("/logout", (req, res) => {
 });
 
 //----add a subject---------------//
-router.post("/addsubject", verifyToken, (req, res) => {
-  jwt.verify(req.token, jwtSecret.jwtKey, (err, authData) => {
-    if (err) {
-      res.status(403).json("forbidden");
-    } else {
-      console.log(req.body);
-      console.log(req.body.subjectDescription);
-
-      const newSubject = {
-        subject_title: req.body.subjectTitle,
-        description: req.body.subjectDescription
-      };
-      new Subject(newSubject)
-        .save()
-        .then(newSubject => {
-          res.status(200).json(newSubject);
-        })
-        .catch(err => {
-          res.status(400).json(err);
-        });
-    }
-  });
-});
+router.post("/addsubject", verifyToken, addSubject);
 
 //-------------add chapters-------------------//
 router.post("/addchapters", (req, res) => {
