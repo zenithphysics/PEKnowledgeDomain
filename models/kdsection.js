@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+//here we need to add section type schema
 
 const kdSectionSchema = new Schema({
   id: {
