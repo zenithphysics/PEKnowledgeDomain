@@ -10,9 +10,6 @@ const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
 const verifyToken = require("../utils/verifyToken");
 const localStorage = require("../utils/localStorage");
 
-//configs
-const jwtSecret = require("../config/jwtSecret");
-
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
@@ -25,8 +22,6 @@ router.post("/login", loginAdmin);
 
 router.get("/logout", (req, res) => {
   localStorage.removeItem("loginToken");
-  res.header("access-token", null);
-
   res.status(200).json({
     message: "logout Success"
   });

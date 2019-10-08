@@ -1,6 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+const kdchapter = require('./kdchapter');
+
 const kdSubjectSchema = new Schema({
     id:{
         type: Schema.Types.ObjectId
@@ -11,10 +13,8 @@ const kdSubjectSchema = new Schema({
     description:{
         type:String
     },
-    chapters:{
-        type:Array
-    }
-
+    chapters:[{kdchapter}]
+ 
 })
 
 const KDSUBJECT = mongoose.model('kdsubject' , kdSubjectSchema)
