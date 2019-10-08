@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const subjectSchema = require("../kdsubject").schema;
+
 const CourseSchema = new Schema({
   Title: {
     type: String
@@ -17,9 +19,7 @@ const CourseSchema = new Schema({
   Video_link: {
     type: String
   },
-  Subjects: {
-    type: Array
-  }
+  Subjects: [subjectSchema]
 });
 
 const Course = mongoose.model("course", CourseSchema);
