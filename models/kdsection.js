@@ -19,4 +19,4 @@ const kdSectionSchema = new Schema({
 
 const KDSECTION = mongoose.model("kdsection", kdSectionSchema);
 
-module.exports = KDSECTION;
+module.exports = { model: KDSECTION, schema: kdSectionSchema };
