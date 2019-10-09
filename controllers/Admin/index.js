@@ -223,3 +223,49 @@ exports.getTopics = (req, res) => {
       res.status(400).json(err);
     });
 };
+
+exports.deleteSubject = (req,res)=> {
+  Subject.remove({_id:req.params.subjectid})
+  .then(()=> {
+     res.status(200).json('Subject deleted successfully!!')
+  }).catch((err)=> {
+     res.status(400).json(err)
+  })
+}
+
+exports.deleteChapter = (req,res)=> {
+   Chapter.remove({_id:req.params.chapterid})
+   .then(()=> {
+      res.status(200).json('chapter deleted sucessfully!!')
+   }).catch((err)=> {
+       res.status(400).json(err)
+   })
+}
+
+exports.deleteTopic = (req,res)=> {
+   Topic.remove({_id:req.params.topicid})
+   .then(()=> {
+     res.status(200).json('topic deleted sucessfully!!')
+   })
+   .catch((err) => {
+     res.status(400).json(err)
+   })
+}
+
+exports.deletePage = (req,res)=> {
+   Page.remove({_id:req.params.pageid})
+   .then(() => {
+      res.status(200).json('page is deleted sucessfully')
+   }).catch((err) => {
+        res.status(400).json(err)
+   })
+}
+
+exports.deleteSection = (req,res)=> {
+    Section.remove({_id:req.params.sectionid})
+    .then(() => {
+      res.status(200).json('section deleted sucessfully!!')
+    }).catch((err) => {
+      res.status(400).json(err)
+    })
+}

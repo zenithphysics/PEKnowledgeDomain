@@ -3,8 +3,12 @@ const bodyParser = require("body-parser");
 
 //controllers for post requests
 const { signUpAdmin, loginAdmin, addSubject, addChapter, addTopic, addPage, addSection } = require("../controllers/Admin");
+
 //controllers for get requests
 const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
+
+//controllers for all delete requests
+const {deleteSubject, deleteChapter, deleteTopic, deletePage, deleteSection} = require('../controllers/Admin')
 
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
@@ -19,7 +23,7 @@ router.post("/signup", signUpAdmin);
 
 //---login route for admin-----------//
 router.post("/login", loginAdmin);
-
+//--logout route for admin-----------//
 router.get("/logout", (req, res) => {
   localStorage.removeItem("loginToken");
   res.status(200).json({
@@ -52,4 +56,19 @@ router.get("/chapters/:subjecttitle", getChapters);
 //--------------to get all the topics realted to the single chapter------------------//
 router.get("/topics/:chaptertitle", getTopics);
 
+//---------------delete routes start from here-------------------------------------//
+//------------delete route for subject---------------------//
+router.delete('/subject/:subjectid' , deleteSubject)
+
+//---------------delete route for chapter--------------------//
+router.delete('/chapter/:chapterid' , deleteChapter) 
+
+//---------delete route for topic---------------------------//
+router.delete('/topic/:topicid' , deleteTopic)
+
+//---------delete route for page----------------------//
+router.delete('/page/:pageid' ,deletePage)
+
+//----------delete route for section------------------//
+router.delete('/section/:sectionid' , deleteSection)
 module.exports = router;
