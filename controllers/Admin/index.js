@@ -224,6 +224,7 @@ exports.getTopics = (req, res) => {
     });
 };
 //-------------all the delete routes start from here---------------//
+//=---------------delete subject route-------------------------//
 exports.deleteSubject = (req,res)=> {
   Subject.remove({_id:req.params.subjectid})
   .then(()=> {
@@ -232,7 +233,7 @@ exports.deleteSubject = (req,res)=> {
      res.status(400).json(err)
   })
 }
-
+//-----------------//delete chapter route------------------------//
 exports.deleteChapter = (req,res)=> {
    Chapter.remove({_id:req.params.chapterid})
    .then(()=> {
@@ -241,7 +242,7 @@ exports.deleteChapter = (req,res)=> {
        res.status(400).json(err)
    })
 }
-
+//----------------------delete topic route--------------------------//
 exports.deleteTopic = (req,res)=> {
    Topic.remove({_id:req.params.topicid})
    .then(()=> {
@@ -251,7 +252,7 @@ exports.deleteTopic = (req,res)=> {
      res.status(400).json(err)
    })
 }
-
+//----------------delete page route--------------------------------//
 exports.deletePage = (req,res)=> {
    Page.remove({_id:req.params.pageid})
    .then(() => {
@@ -260,7 +261,7 @@ exports.deletePage = (req,res)=> {
         res.status(400).json(err)
    })
 }
-
+//---------------delete section route--------------------------------//
 exports.deleteSection = (req,res)=> {
     Section.remove({_id:req.params.sectionid})
     .then(() => {
@@ -269,3 +270,4 @@ exports.deleteSection = (req,res)=> {
       res.status(400).json(err)
     })
 }
+

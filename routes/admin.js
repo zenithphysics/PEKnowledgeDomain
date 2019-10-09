@@ -56,6 +56,12 @@ router.get("/chapters/:subjecttitle", getChapters);
 //--------------to get all the topics realted to the single chapter------------------//
 router.get("/topics/:chaptertitle", getTopics);
 
+//===============update routes starts from here===========================//
+
+
+
+
+
 //---------------delete routes start from here-------------------------------------//
 //------------delete route for subject---------------------//
 router.delete('/subject/:subjectid' , deleteSubject)

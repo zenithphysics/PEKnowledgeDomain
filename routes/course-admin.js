@@ -1,8 +1,8 @@
 const router = require('express').Router()
 const bodyParser = require('body-parser')
-const Course = require('../models/courses/course')
-const Subject = require('../models/courses/subject')
-const Chapter = require('../models/courses/chapter')
+const Course = require('../models/courses/course').model
+const Subject = require('../models/courses/subject').model
+const Chapter = require('../models/courses/chapter').model
 const mongoose= require('mongoose')
 
 
@@ -40,7 +40,8 @@ router.post('/addsubject' , (req,res)=> {
                 courseId:course._id,
                 SubjectTitle:req.body.SubjectTitle,
                 Description:req.body.Description,
-                CourseTitle:req.body.CourseTitle
+                CourseTitle:req.body.CourseTitle,
+                
               }
               new Subject(newSubject).save()
               .then((subject)=> {
