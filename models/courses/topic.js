@@ -5,9 +5,9 @@ const Schema = mongoose.Schema;
 
 const TopicSchema = new Schema({
   chapterId: {
-    type: String
+    type: String 
   },
-  Title: {
+  topicTitle: {
     type: String
   },
   Description: {

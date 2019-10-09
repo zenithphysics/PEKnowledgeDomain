@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const chapterSchema = new Schema({
-  subjectId: {
+  subjectId: { 
     type: String
   },
   Title: {
@@ -13,6 +13,9 @@ const chapterSchema = new Schema({
   },
   Topics: {
     type: Array
+  },
+  subjectTitle:{
+    type:String
   }
 });
 

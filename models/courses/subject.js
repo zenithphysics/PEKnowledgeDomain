@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+ 
 const SubjectSchema = new Schema({
   courseId: {
     type: String
   },
-  Title: {
+  SubjectTitle: {
     type: String
   },
   Description: {
@@ -13,6 +13,9 @@ const SubjectSchema = new Schema({
   },
   Chapters: {
     type: Array
+  },
+  CourseTitle:{
+    type:String
   }
 });
 
