@@ -4,7 +4,9 @@ const Subject = require("../../models/kdsubject").model;
 const Chapter = require("../../models/kdchapter").model;
 const Topic = require("../../models/kdtopic").model;
 const Page = require("../../models/kdpage").model;
+const Section = require('../../models/kdsection')
 const jwt = require("jsonwebtoken");
+//when all the apis are created then we need to implemet verify token
 
 /*--------------joi validation schema-----------*/
 const loginSchema = require("../../joi_schema/login");
@@ -271,3 +273,96 @@ exports.deleteSection = (req,res)=> {
     })
 }
 
+//==========all the updates routes start from here================//
+
+//---------------route for edit subject--------------------//
+exports.editSubject = (req,res) => {
+      Subject.findOne({_id:req.params.subjectid})
+      .then((subject) => {
+        subject.subject_title = req.body.subjectTitle,
+        subject.description = req.body.subjectDescription
+         subject.save()
+         .then((subj) => {
+            res.status(200).json(subj)
+         })
+         .catch(() => {
+           res.status(400).json(err)
+         })
+      }).catch((err) => {
+         res.status(404).json(err)
+      })
+}
+
+//--------------route for edit chapter------------------//
+exports.editChapter = (req,res) => {
+     console.log(req.body)
+     Chapter.findOne({_id:req.params.chapterid})
+     .then((chapter) => {
+      chapter.subject_title = req.body.subjectTitle,
+      chapter.chapterTitle = req.body.chapterTitle,
+      chapter.description = req.body.chapterDescription,
+      
+        chapter.save()
+          .then((editedchapter) => {
+         res.status(200).json(editedchapter)
+      })
+      .catch((err) => {
+         res.status(400).json(err)
+      })
+     }).catch((err) => {
+        res.status(400).json(err)
+     })
+}
+
+//==============route for edit page===================//
+exports.editPage = (req,res) => {
+  Page.findOne({_id:req.params.pageid})
+  .then((page) => {
+    page.page_type = req.body.page_type,
+    page.topic_title = req.body.topicTitle,
+    page.page_title = req.body.page_title
+    page.save()
+    .then((editedpage) => {
+        res.status(200).json(editedpage)
+    })
+    .catch((err) => {
+         res.status(400).json(err)
+    })
+  })
+  .catch((err) => {
+     res.status(400).json(err)
+  })
+  .catch((err) => {
+         res.status(400).json(err)
+  })
+}
+
+//-------------edit route for topic ----------------//
+exports.editTopic = (req,res) => {
+   Topic.findOne({_id:req.params.topicid})
+   .then((topic) => {
+    topic.title = req.body.chapterTitle,
+    topic.topic_title =  req.body.topicTitle,
+    topic.description = req.body.topicDescription,
+   
+    topic.save()
+    .then((editedTopic) => {
+           res.status(200).json(editedTopic)
+    }).catch((err) => {
+        res.status(400).json(err)
+    })
+   }).catch((err) => {
+     res.status(400).json(err)
+   })
+}
+
+//=================edit route for section-----------------//
+exports.editSection = (req,res) => {
+   Section.findOne({_id:req.params.sectionid})
+   .then((section) => {
+        res.status(200).json('needed to be implemented!!')
+   })
+   .catch(() => {
+     res.status(404).json(err)
+   })
+}
