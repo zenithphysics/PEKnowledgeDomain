@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-var order_schema = new mongoose.Schema({
-    studentId: String,
-    courseId: String,
-    subjectIds: [String],
-    createdOn: Date,
-    status: String,
-    price: Number,
-    discountCoupon: String
+const order_schema = new mongoose.Schema({
+  studentId: String,
+  courseId: String,
+  subjectIds: [String],
+  createdOn: Date,
+  status: String,
+  price: Number,
+  discountCoupon: String
 });
-var order = mongoose.model('order', order_schema);
-module.exports = order;
+const order = mongoose.model("order", order_schema);
+module.exports = { model: order, schema: order_schema };

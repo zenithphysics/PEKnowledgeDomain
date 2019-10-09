@@ -19,4 +19,4 @@ const adminSchema = new Schema({
 });
 
 const ADMIN = mongoose.model("adminschema", adminSchema);
-module.exports = ADMIN;
+module.exports = { model: ADMIN, schema: adminSchema };

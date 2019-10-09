@@ -24,4 +24,6 @@ const TopicSchema = new Schema({
   }
 });
 
-module.exports = Topic = mongoose.model("topic", TopicSchema);
+const Topic = mongoose.model("topic", TopicSchema);
+
+module.exports = { model: Topic, schema: TopicSchema };

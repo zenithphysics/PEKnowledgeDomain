@@ -22,8 +22,6 @@ const kdChapterSchema = new Schema({
   }
 });
 
-module.exports = kdChapterSchema;
-
 const KDCHAPTER = mongoose.model("kdchapter", kdChapterSchema);
 
-module.exports = KDCHAPTER;
+module.exports = { model: KDCHAPTER, schema: kdChapterSchema };

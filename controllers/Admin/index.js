@@ -1,9 +1,9 @@
 const bcrypt = require("bcryptjs");
-const Admin = require("../../models/admin");
-const Subject = require("../../models/kdsubject");
-const Chapter = require("../../models/kdchapter");
-const Topic = require("../../models/kdtopic");
-const Page = require("../../models/kdpage");
+const Admin = require("../../models/admin").model;
+const Subject = require("../../models/kdsubject").model;
+const Chapter = require("../../models/kdchapter").model;
+const Topic = require("../../models/kdtopic").model;
+const Page = require("../../models/kdpage").model;
 const jwt = require("jsonwebtoken");
 
 /*--------------joi validation schema-----------*/
