@@ -223,7 +223,7 @@ exports.getTopics = (req, res) => {
       res.status(400).json(err);
     });
 };
-
+//-------------all the delete routes start from here---------------//
 exports.deleteSubject = (req,res)=> {
   Subject.remove({_id:req.params.subjectid})
   .then(()=> {
