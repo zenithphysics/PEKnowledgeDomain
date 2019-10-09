@@ -24,4 +24,4 @@ const kdTopicSchema = new Schema({
 
 const KDTOPIC = mongoose.model("kdtopic", kdTopicSchema);
 
-module.exports = KDTOPIC;
+module.exports = { model: KDTOPIC, schema: kdTopicSchema };
