@@ -10,6 +10,9 @@ const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
 //controllers for all delete requests
 const {deleteSubject, deleteChapter, deleteTopic, deletePage, deleteSection} = require('../controllers/Admin')
 
+//controllers for all the update routes
+const {editSubject, editChapter, editPage, editTopic, editSection} = require('../controllers/Admin')
+
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
 const localStorage = require("../utils/localStorage");
@@ -57,10 +60,17 @@ router.get("/chapters/:subjecttitle", getChapters);
 router.get("/topics/:chaptertitle", getTopics);
 
 //===============update routes starts from here===========================//
+//----------------update route for kdsubject---------------------//
+router.put('/subject/:subjectid', editSubject)
 
-
-
-
+//=================update route for kd chapter=========================//
+router.put('/chapter/:chapterid' , editChapter)
+//========================update route for kd page =====================//
+router.put('/page/:pageid', editPage)
+//====================update route for topic===========================//
+router.put('/topic/:topicid', editTopic)
+//--------------------update route for kd section================//
+router.put('/section/:sectionid' , editSection)
 
 //---------------delete routes start from here-------------------------------------//
 //------------delete route for subject---------------------//
@@ -77,4 +87,7 @@ router.delete('/page/:pageid' ,deletePage)
 
 //----------delete route for section------------------//
 router.delete('/section/:sectionid' , deleteSection)
+
+
+
 module.exports = router;

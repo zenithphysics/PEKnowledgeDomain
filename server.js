@@ -11,11 +11,14 @@ const adminRoutes = require("./routes/admin");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
 const CourseAdminRoutes = require('./routes/course-admin')
+const methodOverride = require('method-override')
 const app = express();
 
 const SERVER_PORT = process.env.PORT || 3000;
 
 require("dotenv").config();
+
+app.use(methodOverride('_method'))
 
 app.engine(
   "handlebars",
