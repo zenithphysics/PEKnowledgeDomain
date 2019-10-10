@@ -27,7 +27,7 @@ const sectionTypeSchema = new Schema({
       text_data: { type: String }
     })
   ],
-  quiz: [], // need to be discuss
+  quiz: [], // need to be discuss //objects array needs to be implemented
   assignment: []
 });
 

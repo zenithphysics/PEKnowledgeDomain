@@ -181,11 +181,11 @@ exports.addPage = (req, res) => {
           .then(page => {
             Topic.findOneAndUpdate({ topic_title: req.body.topicTitle }, { $push: { Pages: page._id } }, { new: true })
               .then(data => res.json(data))
-              .catch(err => console.log(err));
+              .catch(err => console.log(err))
           })
-          .catch(err => console.log(err));
+          .catch(err => console.log(err))
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   });
 };
 
@@ -302,9 +302,11 @@ exports.editChapter = (req,res) => {
       chapter.chapterTitle = req.body.chapterTitle,
       chapter.description = req.body.chapterDescription,
       
+      
         chapter.save()
           .then((editedchapter) => {
          res.status(200).json(editedchapter)
+         
       })
       .catch((err) => {
          res.status(400).json(err)
@@ -344,6 +346,7 @@ exports.editTopic = (req,res) => {
     topic.title = req.body.chapterTitle,
     topic.topic_title =  req.body.topicTitle,
     topic.description = req.body.topicDescription,
+   
    
     topic.save()
     .then((editedTopic) => {
