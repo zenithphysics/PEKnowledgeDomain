@@ -189,7 +189,7 @@ exports.addPage = (req, res) => {
 //--------------------add sections function---------------//
 exports.addSection = (req, res) => {
   console.log(req.body);
-  //login is still needed to be implemented//
+  //logic is still needed to be implemented//
 };
 
 //----------------get all subjects in database--------------//

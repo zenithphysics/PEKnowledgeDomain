@@ -15,7 +15,8 @@ const adminSchema = new Schema({
   role: {
     type: String,
     default: "academic"
-  }
+  },
+  accessRights: [String] // accessRights:["right_1","right_2".....]
 });
 
 const ADMIN = mongoose.model("adminschema", adminSchema);

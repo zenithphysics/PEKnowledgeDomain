@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-//here we need to add section type schema
 
 const sectionTypeSchema = new Schema({
   videos: [
@@ -28,19 +27,25 @@ const sectionTypeSchema = new Schema({
     })
   ],
   quiz: [
-    {
+    new Schema({
+      id: {
+        type: Schema.Types.ObjectId
+      },
       questionsimg: { light: String, dark: String },
       answerimg: { light: String, dark: String },
-      videoSolutionURL: {},
+      videoSolutionURL: String,
       answerkey: String
-    }
-  ], // need to be discuss
+    })
+  ],
   assignment: [
-    {
-      questionsimg: { light: "", dark: "" },
-      answerimg: { light: "", dark: "" },
-      videoSolutionURL: {}
-    }
+    new Schema({
+      id: {
+        type: Schema.Types.ObjectId
+      },
+      questionsimg: { light: String, dark: String },
+      answerimg: { light: String, dark: String },
+      videoSolutionURL: String
+    })
   ]
 });
 
