@@ -82,8 +82,9 @@ exports.loginAdmin = async (req, res, next) => {
 
 //-----add subject function-----------//
 exports.addSubject = (req, res) => {
-  if (req.authData) {
-    console.log(req.authData);
+  const authData = req.authData;
+  if (authData) {
+    console.log(authData);
     const { subjectTitle, subjectDescription } = req.body;
     const newSubject = {
       subject_title: subjectTitle,
@@ -92,10 +93,11 @@ exports.addSubject = (req, res) => {
     new Subject(newSubject)
       .save()
       .then(newSubject => {
-        res.status(200).json({ ...newSubject._doc, addedBy: authData });
+        res.status(200).json({ ...newSubject, addedBy: authData });
       })
       .catch(err => {
-        res.status(400).json({ ...err, message: "error" }); //error in this portion
+        console.log(err);
+        res.status(400).json({ ...err, message: "error" });
       });
   }
 };
