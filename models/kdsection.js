@@ -16,10 +16,10 @@ const sectionTypeSchema = new Schema({
       id: {
         type: Schema.Types.ObjectId
       },
-      img_link: { type: String }
+      img_path: { light: "", dark: "" }
     })
   ],
-  theory_text: [
+  theory_richtext: [
     new Schema({
       id: {
         type: Schema.Types.ObjectId
@@ -27,8 +27,21 @@ const sectionTypeSchema = new Schema({
       text_data: { type: String }
     })
   ],
-  quiz: [], // need to be discuss //objects array needs to be implemented
-  assignment: []
+  quiz: [
+    {
+      questionsimg: { light: String, dark: String },
+      answerimg: { light: String, dark: String },
+      videoSolutionURL: {},
+      answerkey: String
+    }
+  ], // need to be discuss
+  assignment: [
+    {
+      questionsimg: { light: "", dark: "" },
+      answerimg: { light: "", dark: "" },
+      videoSolutionURL: {}
+    }
+  ]
 });
 
 const kdSectionSchema = new Schema({

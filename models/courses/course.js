@@ -5,7 +5,7 @@ const subjectSchema = require("../kdsubject").schema;
 
 const CourseSchema = new Schema({
   CourseTitle: {
-    type: String 
+    type: String
   },
   Created_by: {
     type: String
@@ -17,7 +17,8 @@ const CourseSchema = new Schema({
     type: Array
   },
   Video_link: {
-    type: String
+    type: String,
+    unique: true
   },
   Subjects: [subjectSchema]
 });

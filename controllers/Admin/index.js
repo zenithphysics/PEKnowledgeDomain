@@ -4,7 +4,7 @@ const Subject = require("../../models/kdsubject").model;
 const Chapter = require("../../models/kdchapter").model;
 const Topic = require("../../models/kdtopic").model;
 const Page = require("../../models/kdpage").model;
-const Section = require('../../models/kdsection')
+const Section = require("../../models/kdsection");
 const jwt = require("jsonwebtoken");
 //when all the apis are created then we need to implemet verify token
 
@@ -64,7 +64,7 @@ exports.loginAdmin = async (req, res, next) => {
         if (loginStatus) {
           jwt.sign({ id: adminObject._id }, jwtSecret.jwtKey, (err, token) => {
             localStorage.setItem("loginToken", token);
-            res.header("access-token", token);
+            // res.header("access-token", token);
             res.status(200).json({
               "access-token": token,
               registeredEmail: adminObject.email,
@@ -82,27 +82,22 @@ exports.loginAdmin = async (req, res, next) => {
 
 //-----add subject function-----------//
 exports.addSubject = (req, res) => {
-  jwt.verify(req.token, jwtSecret.jwtKey, (err, authData) => {
-    if (err) {
-      res.status(403).json("forbidden");
-    } else {
-      console.log(req.body);
-      console.log(req.body.subjectDescription);
-
-      const newSubject = {
-        subject_title: req.body.subjectTitle,
-        description: req.body.subjectDescription
-      };
-      new Subject(newSubject)
-        .save()
-        .then(newSubject => {
-          res.status(200).json(newSubject);
-        })
-        .catch(err => {
-          res.status(400).json(err);
-        });
-    }
-  });
+  if (req.authData) {
+    console.log(req.authData);
+    const { subjectTitle, subjectDescription } = req.body;
+    const newSubject = {
+      subject_title: subjectTitle,
+      description: subjectDescription
+    };
+    new Subject(newSubject)
+      .save()
+      .then(newSubject => {
+        res.status(200).json({ ...newSubject._doc, addedBy: authData });
+      })
+      .catch(err => {
+        res.status(400).json({ ...err, message: "error" }); //error in this portion
+      });
+  }
 };
 
 //-----------add chapter function---------------//
@@ -181,11 +176,11 @@ exports.addPage = (req, res) => {
           .then(page => {
             Topic.findOneAndUpdate({ topic_title: req.body.topicTitle }, { $push: { Pages: page._id } }, { new: true })
               .then(data => res.json(data))
-              .catch(err => console.log(err))
+              .catch(err => console.log(err));
           })
-          .catch(err => console.log(err))
+          .catch(err => console.log(err));
       })
-      .catch(err => console.log(err))
+      .catch(err => console.log(err));
   });
 };
 
@@ -227,145 +222,145 @@ exports.getTopics = (req, res) => {
 };
 //-------------all the delete routes start from here---------------//
 //=---------------delete subject route-------------------------//
-exports.deleteSubject = (req,res)=> {
-  Subject.remove({_id:req.params.subjectid})
-  .then(()=> {
-     res.status(200).json('Subject deleted successfully!!')
-  }).catch((err)=> {
-     res.status(400).json(err)
-  })
-}
-//-----------------//delete chapter route------------------------//
-exports.deleteChapter = (req,res)=> {
-   Chapter.remove({_id:req.params.chapterid})
-   .then(()=> {
-      res.status(200).json('chapter deleted sucessfully!!')
-   }).catch((err)=> {
-       res.status(400).json(err)
-   })
-}
-//----------------------delete topic route--------------------------//
-exports.deleteTopic = (req,res)=> {
-   Topic.remove({_id:req.params.topicid})
-   .then(()=> {
-     res.status(200).json('topic deleted sucessfully!!')
-   })
-   .catch((err) => {
-     res.status(400).json(err)
-   })
-}
-//----------------delete page route--------------------------------//
-exports.deletePage = (req,res)=> {
-   Page.remove({_id:req.params.pageid})
-   .then(() => {
-      res.status(200).json('page is deleted sucessfully')
-   }).catch((err) => {
-        res.status(400).json(err)
-   })
-}
-//---------------delete section route--------------------------------//
-exports.deleteSection = (req,res)=> {
-    Section.remove({_id:req.params.sectionid})
+exports.deleteSubject = (req, res) => {
+  Subject.remove({ _id: req.params.subjectid })
     .then(() => {
-      res.status(200).json('section deleted sucessfully!!')
-    }).catch((err) => {
-      res.status(400).json(err)
+      res.status(200).json("Subject deleted successfully!!");
     })
-}
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//-----------------//delete chapter route------------------------//
+exports.deleteChapter = (req, res) => {
+  Chapter.remove({ _id: req.params.chapterid })
+    .then(() => {
+      res.status(200).json("chapter deleted sucessfully!!");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//----------------------delete topic route--------------------------//
+exports.deleteTopic = (req, res) => {
+  Topic.remove({ _id: req.params.topicid })
+    .then(() => {
+      res.status(200).json("topic deleted sucessfully!!");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//----------------delete page route--------------------------------//
+exports.deletePage = (req, res) => {
+  Page.remove({ _id: req.params.pageid })
+    .then(() => {
+      res.status(200).json("page is deleted sucessfully");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//---------------delete section route--------------------------------//
+exports.deleteSection = (req, res) => {
+  Section.remove({ _id: req.params.sectionid }).then(() => {
+    res.status(200).json("section deleted sucessfully!!");
+  });
+};
 
 //==========all the updates routes start from here================//
 
 //---------------route for edit subject--------------------//
-exports.editSubject = (req,res) => {
-      Subject.findOne({_id:req.params.subjectid})
-      .then((subject) => {
-        subject.subject_title = req.body.subjectTitle,
-        subject.description = req.body.subjectDescription
-         subject.save()
-         .then((subj) => {
-            res.status(200).json(subj)
-         })
-         .catch(() => {
-           res.status(400).json(err)
-         })
-      }).catch((err) => {
-         res.status(404).json(err)
-      })
-}
+exports.editSubject = (req, res) => {
+  Subject.findOne({ _id: req.params.subjectid })
+    .then(subject => {
+      (subject.subject_title = req.body.subjectTitle), (subject.description = req.body.subjectDescription);
+      subject
+        .save()
+        .then(subj => {
+          res.status(200).json(subj);
+        })
+        .catch(() => {
+          res.status(400).json(err);
+        });
+    })
+    .catch(err => {
+      res.status(404).json(err);
+    });
+};
 
 //--------------route for edit chapter------------------//
-exports.editChapter = (req,res) => {
-     console.log(req.body)
-     Chapter.findOne({_id:req.params.chapterid})
-     .then((chapter) => {
-      chapter.subject_title = req.body.subjectTitle,
-      chapter.chapterTitle = req.body.chapterTitle,
-      chapter.description = req.body.chapterDescription,
-      
-      
-        chapter.save()
-          .then((editedchapter) => {
-         res.status(200).json(editedchapter)
-         
-      })
-      .catch((err) => {
-         res.status(400).json(err)
-      })
-     }).catch((err) => {
-        res.status(400).json(err)
-     })
-}
+exports.editChapter = (req, res) => {
+  console.log(req.body);
+  Chapter.findOne({ _id: req.params.chapterid })
+    .then(chapter => {
+      (chapter.subject_title = req.body.subjectTitle),
+        (chapter.chapterTitle = req.body.chapterTitle),
+        (chapter.description = req.body.chapterDescription),
+        chapter
+          .save()
+          .then(editedchapter => {
+            res.status(200).json(editedchapter);
+          })
+          .catch(err => {
+            res.status(400).json(err);
+          });
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
 
 //==============route for edit page===================//
-exports.editPage = (req,res) => {
-  Page.findOne({_id:req.params.pageid})
-  .then((page) => {
-    page.page_type = req.body.page_type,
-    page.topic_title = req.body.topicTitle,
-    page.page_title = req.body.page_title
-    page.save()
-    .then((editedpage) => {
-        res.status(200).json(editedpage)
+exports.editPage = (req, res) => {
+  Page.findOne({ _id: req.params.pageid })
+    .then(page => {
+      (page.page_type = req.body.page_type), (page.topic_title = req.body.topicTitle), (page.page_title = req.body.page_title);
+      page
+        .save()
+        .then(editedpage => {
+          res.status(200).json(editedpage);
+        })
+        .catch(err => {
+          res.status(400).json(err);
+        });
     })
-    .catch((err) => {
-         res.status(400).json(err)
+    .catch(err => {
+      res.status(400).json(err);
     })
-  })
-  .catch((err) => {
-     res.status(400).json(err)
-  })
-  .catch((err) => {
-         res.status(400).json(err)
-  })
-}
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
 
 //-------------edit route for topic ----------------//
-exports.editTopic = (req,res) => {
-   Topic.findOne({_id:req.params.topicid})
-   .then((topic) => {
-    topic.title = req.body.chapterTitle,
-    topic.topic_title =  req.body.topicTitle,
-    topic.description = req.body.topicDescription,
-   
-   
-    topic.save()
-    .then((editedTopic) => {
-           res.status(200).json(editedTopic)
-    }).catch((err) => {
-        res.status(400).json(err)
+exports.editTopic = (req, res) => {
+  Topic.findOne({ _id: req.params.topicid })
+    .then(topic => {
+      (topic.title = req.body.chapterTitle),
+        (topic.topic_title = req.body.topicTitle),
+        (topic.description = req.body.topicDescription),
+        topic
+          .save()
+          .then(editedTopic => {
+            res.status(200).json(editedTopic);
+          })
+          .catch(err => {
+            res.status(400).json(err);
+          });
     })
-   }).catch((err) => {
-     res.status(400).json(err)
-   })
-}
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
 
 //=================edit route for section-----------------//
-exports.editSection = (req,res) => {
-   Section.findOne({_id:req.params.sectionid})
-   .then((section) => {
-        res.status(200).json('needed to be implemented!!')
-   })
-   .catch(() => {
-     res.status(404).json(err)
-   })
-}
+exports.editSection = (req, res) => {
+  Section.findOne({ _id: req.params.sectionid })
+    .then(section => {
+      res.status(200).json("needed to be implemented!!");
+    })
+    .catch(() => {
+      res.status(404).json(err);
+    });
+};
