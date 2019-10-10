@@ -37,7 +37,7 @@ exports.addSubject = (req, res) => {
     new Subject(newSubject)
       .save()
       .then(subject => {
-        Subject.findOne({ CourseTitle: req.body.CourseTitle })
+        Subject.findOne({ CourseTitle })
           .then(subject => {
             Course.findOneAndUpdate({ CourseTitle: req.body.CourseTitle }, { $push: { Subjects: subject._id } }, { new: true })
               .then(data => res.json(data))

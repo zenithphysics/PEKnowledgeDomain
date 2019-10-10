@@ -62,7 +62,7 @@ exports.loginAdmin = async (req, res, next) => {
         if (loginStatus) {
           jwt.sign({ id: adminObject._id }, jwtSecret.jwtKey, (err, token) => {
             localStorage.setItem("loginToken", token);
-            res.header("access-token", token);
+            // res.header("access-token", token);
             res.status(200).json({
               "access-token": token,
               registeredEmail: adminObject.email,
@@ -80,27 +80,22 @@ exports.loginAdmin = async (req, res, next) => {
 
 //-----add subject function-----------//
 exports.addSubject = (req, res) => {
-  jwt.verify(req.token, jwtSecret.jwtKey, (err, authData) => {
-    if (err) {
-      res.status(403).json("forbidden");
-    } else {
-      console.log(req.body);
-      console.log(req.body.subjectDescription);
-
-      const newSubject = {
-        subject_title: req.body.subjectTitle,
-        description: req.body.subjectDescription
-      };
-      new Subject(newSubject)
-        .save()
-        .then(newSubject => {
-          res.status(200).json(newSubject);
-        })
-        .catch(err => {
-          res.status(400).json(err);
-        });
-    }
-  });
+  if (req.authData) {
+    console.log(req.authData);
+    const { subjectTitle, subjectDescription } = req.body;
+    const newSubject = {
+      subject_title: subjectTitle,
+      description: subjectDescription
+    };
+    new Subject(newSubject)
+      .save()
+      .then(newSubject => {
+        res.status(200).json({ ...newSubject._doc, addedBy: authData });
+      })
+      .catch(err => {
+        res.status(400).json({ ...err, message: "error" });    //error in this portion
+      });
+  }
 };
 
 //-----------add chapter function---------------//
@@ -225,49 +220,52 @@ exports.getTopics = (req, res) => {
 };
 //-------------all the delete routes start from here---------------//
 //=---------------delete subject route-------------------------//
-exports.deleteSubject = (req,res)=> {
-  Subject.remove({_id:req.params.subjectid})
-  .then(()=> {
-     res.status(200).json('Subject deleted successfully!!')
-  }).catch((err)=> {
-     res.status(400).json(err)
-  })
-}
-//-----------------//delete chapter route------------------------//
-exports.deleteChapter = (req,res)=> {
-   Chapter.remove({_id:req.params.chapterid})
-   .then(()=> {
-      res.status(200).json('chapter deleted sucessfully!!')
-   }).catch((err)=> {
-       res.status(400).json(err)
-   })
-}
-//----------------------delete topic route--------------------------//
-exports.deleteTopic = (req,res)=> {
-   Topic.remove({_id:req.params.topicid})
-   .then(()=> {
-     res.status(200).json('topic deleted sucessfully!!')
-   })
-   .catch((err) => {
-     res.status(400).json(err)
-   })
-}
-//----------------delete page route--------------------------------//
-exports.deletePage = (req,res)=> {
-   Page.remove({_id:req.params.pageid})
-   .then(() => {
-      res.status(200).json('page is deleted sucessfully')
-   }).catch((err) => {
-        res.status(400).json(err)
-   })
-}
-//---------------delete section route--------------------------------//
-exports.deleteSection = (req,res)=> {
-    Section.remove({_id:req.params.sectionid})
+exports.deleteSubject = (req, res) => {
+  Subject.remove({ _id: req.params.subjectid })
     .then(() => {
-      res.status(200).json('section deleted sucessfully!!')
-    }).catch((err) => {
-      res.status(400).json(err)
+      res.status(200).json("Subject deleted successfully!!");
     })
-}
-
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//-----------------//delete chapter route------------------------//
+exports.deleteChapter = (req, res) => {
+  Chapter.remove({ _id: req.params.chapterid })
+    .then(() => {
+      res.status(200).json("chapter deleted sucessfully!!");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//----------------------delete topic route--------------------------//
+exports.deleteTopic = (req, res) => {
+  Topic.remove({ _id: req.params.topicid })
+    .then(() => {
+      res.status(200).json("topic deleted sucessfully!!");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//----------------delete page route--------------------------------//
+exports.deletePage = (req, res) => {
+  Page.remove({ _id: req.params.pageid })
+    .then(() => {
+      res.status(200).json("page is deleted sucessfully");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
+//---------------delete section route--------------------------------//
+exports.deleteSection = (req, res) => {
+  Section.remove({ _id: req.params.sectionid })
+    .then(() => {
+      res.status(200).json("section deleted sucessfully!!");
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+};
