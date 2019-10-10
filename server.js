@@ -10,11 +10,15 @@ const keys = require("./config/keys");
 const adminRoutes = require("./routes/admin");
 const bodyParser = require("body-parser");
 const jwt = require("jsonwebtoken");
+const CourseAdminRoutes = require('./routes/course-admin')
+const methodOverride = require('method-override')
 const app = express();
 
 const SERVER_PORT = process.env.PORT || 3000;
 
 require("dotenv").config();
+
+app.use(methodOverride('_method'))
 
 app.engine(
   "handlebars",
@@ -39,10 +43,13 @@ mongoose
   });
 
 app.use("/admin", adminRoutes);
+app.use('/courseadmin' , CourseAdminRoutes)
 
 app.get("/", (req, res) => {
   res.render("Subject/addsubject");
-});
+})
+
+
 
 app.listen(SERVER_PORT, (req, res) => {
   console.log("server started at " + SERVER_PORT);
