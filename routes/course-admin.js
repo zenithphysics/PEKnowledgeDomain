@@ -30,6 +30,6 @@ router.get('/subjects', getSubjects)
 router.get('/chapters', getChapters)
 
 //rotue for getting all the topics//
-router.get('/gettopics', getTopics)
+router.get('/topics', getTopics)
 
 module.exports = router;
