@@ -28,3 +28,4 @@ const TopicSchema = new Schema({
 const Topic = mongoose.model("topic", TopicSchema);
 
 module.exports = { model: Topic, schema: TopicSchema };
+
