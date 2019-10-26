@@ -35,7 +35,7 @@ router.get("/logout", (req, res) => {
 });
 
 //----add a subject---------------//
-router.post("/addsubject", verifyToken, addSubject);
+router.post("/addsubject", addSubject);
 
 //-------------add chapters-------------------//
 router.post("/addchapters", addChapter);

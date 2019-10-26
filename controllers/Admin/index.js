@@ -82,25 +82,24 @@ exports.loginAdmin = async (req, res, next) => {
 
 //-----add subject function-----------//
 exports.addSubject = (req, res) => {
-  const authData = req.authData;
-  if (authData) {
-    console.log(authData);
+ // const authData = req.authData;
+ // if (authData) {
+  //  console.log(authData);
     const { subjectTitle, subjectDescription } = req.body;
     const newSubject = {
       subject_title: subjectTitle,
       description: subjectDescription
-    };
+    }
     new Subject(newSubject)
       .save()
       .then(newSubject => {
-        res.status(200).json({ ...newSubject, addedBy: authData });
+        res.status(200).json(newSubject)
       })
       .catch(err => {
         console.log(err);
         res.status(400).json({ ...err, message: "error" });
       });
   }
-};
 
 //-----------add chapter function---------------//
 exports.addChapter = (req, res) => {
@@ -188,8 +187,7 @@ exports.addPage = (req, res) => {
 
 //--------------------add sections function---------------//
 exports.addSection = (req, res) => {
-  console.log(req.body);
-  //login is still needed to be implemented//
+   
 };
 
 //----------------get all subjects in database--------------//
