@@ -238,7 +238,7 @@ exports.addSection = (req, res) => {
              newSection.theory_richtext = req.body.text_data
         }
         if(req.body.section_type === 'quiz') {
-           //needed to implemented correctly
+           //needed to implemented correctly//
                newSection.section_name = req.body.section_type
                newSection.quiz.questionsimg =  req.body.questionsimg
                newSection.quiz.answerimg = req.body.answerimg
@@ -246,7 +246,7 @@ exports.addSection = (req, res) => {
                newSection.quiz.videoSolutionURL = req.body.videoSolutionURL
         }
         if(req.body.section_type === 'assignment') {
-          //needed to be implemented correctly
+          //needed to be implemented correctly//
              newSection.section_name = req.body.section_type
              newSection.questionsimg = req.body.questionsimg
              newSection.answerimg = req.body.answerimg
@@ -495,9 +495,9 @@ exports.editTopic = (req, res) => {
       (topic.title = req.body.chapterTitle),
         (topic.topic_title = req.body.topicTitle),
         (topic.description = req.body.topicDescription),
-        topic
-          .save()
+        topic.save()
           .then(editedTopic => {
+           // console.log(editedTopic)
             res.status(200).json(editedTopic);
           })
           .catch(err => {
@@ -521,19 +521,20 @@ exports.editSection = (req, res) => {
     .then((section) => {
       section.section_title =  req.body.section_title
       section.page_title = req.body.page_title
-      if(section_type === 'videos') {
-        section.section_type.videos.section_name = req.body.section_type
-        section.section_type.videos.link = req.body.link
+      if(req.body.section_type === 'videos') {
+        section.section_name = req.body.section_type
+        section.videos = req.body.videoLinks
       }
-      if(section_type === 'theory_image') {
-        section.section_type.theory_img.section_name = req.body.section_type
-        section.section_type.theory_img.img_path = req.body.img_path
+      if(req.body.section_type === 'theory_image') {
+        section.section_name = req.body.section_type
+        section.theory_img = req.body.img_path
      }
      if(section_type === 'theoryrichtext') {
-      section.section_type.theoryrich_text.section_name = req.body.section_type
-      section.section_type.theoryrich_text.text_data = req.body.text_data
+      section.section_name = req.body.section_type
+      section.theoryrich_text = req.body.text_data
      }
      if(section_type === 'quiz') {
+       //needed to be implemented the below code is not working
       section.section_type.quiz.section_name = req.body.section_type
       section.section_type.quiz.questionsimg =  req.body.questionsimg
       section.section_type.quiz.ansimg = req.body.answerimg
@@ -541,6 +542,7 @@ exports.editSection = (req, res) => {
       section.section_type.quiz.videoSolution.URL = req.body.videoSolutionURL
      }
      if(section_type === 'assignment') {
+       //needed to be implemented the below code is not working
       section.section_type.assignment.section_name = req.body.section_type
       section.section_type.assignment.questionsimg = req.body.questionsimg
       section.section_type.assignment.ansimg = req.body.answerimg
