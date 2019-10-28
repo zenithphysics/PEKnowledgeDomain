@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const chapterSchema = require("../kdchapter").schema;
+
 const SubjectSchema = new Schema({
   courseId: {
     type: String
   },
-  Title: {
+  SubjectTitle: {
     type: String
   },
   Description: {
     type: String
   },
-  Chapters: {
-    type: Array
-  }
+  courseTitle:{
+   type:String
+  },
+  Chapters: [chapterSchema]
 });
 
 const Subject = mongoose.model("subject", SubjectSchema);

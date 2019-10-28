@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const subjectSchema = require("../kdsubject").schema;
+ 
 const CourseSchema = new Schema({
-  Title: {
+  CourseTitle: {
     type: String
   },
   Created_by: {
@@ -15,11 +17,10 @@ const CourseSchema = new Schema({
     type: Array
   },
   Video_link: {
-    type: String
+    type: String,
+    unique: true
   },
-  Subjects: {
-    type: Array
-  }
+  Subjects: [subjectSchema]
 });
 
 const Course = mongoose.model("course", CourseSchema);

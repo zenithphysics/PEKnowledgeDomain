@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const kdPageSchema = require("./kdpage").schema;
+
 const kdTopicSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId
@@ -17,9 +19,7 @@ const kdTopicSchema = new Schema({
   chapter_id: {
     type: String
   },
-  pages: {
-    type: Array
-  }
+  pages: [kdPageSchema]
 });
 
 const KDTOPIC = mongoose.model("kdtopic", kdTopicSchema);

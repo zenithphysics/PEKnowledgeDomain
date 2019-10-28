@@ -3,8 +3,15 @@ const bodyParser = require("body-parser");
 
 //controllers for post requests
 const { signUpAdmin, loginAdmin, addSubject, addChapter, addTopic, addPage, addSection } = require("../controllers/Admin");
+
 //controllers for get requests
 const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
+
+//controllers for all delete requests
+const {deleteSubject, deleteChapter, deleteTopic, deletePage, deleteSection} = require('../controllers/Admin')
+
+//controllers for all the update routes
+const {editSubject, editChapter, editPage, editTopic, editSection} = require('../controllers/Admin')
 
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
@@ -19,7 +26,7 @@ router.post("/signup", signUpAdmin);
 
 //---login route for admin-----------//
 router.post("/login", loginAdmin);
-
+//--logout route for admin-----------//
 router.get("/logout", (req, res) => {
   localStorage.removeItem("loginToken");
   res.status(200).json({
@@ -28,28 +35,59 @@ router.get("/logout", (req, res) => {
 });
 
 //----add a subject---------------//
-router.post("/addsubject", verifyToken, addSubject);
+router.post("/addsubject",verifyToken, addSubject);
 
 //-------------add chapters-------------------//
-router.post("/addchapters", addChapter);
+router.post("/addchapters",verifyToken, addChapter);
 
 //add tpics to chapters-----------------------//
-router.post("/addtopics", addTopic);
+router.post("/addtopics",verifyToken, addTopic);
 //---------------add pages to topics----------------------//
-router.post("/addpages", addPage);
+router.post("/addpages",verifyToken, addPage);
 
 //----------------add sections to pages-----------------------//
-router.post("/addsection", addSection);
+router.post("/addsection",verifyToken, addSection);
 
 //-----------starting with all the get routes from here--------------------------//
 
 //to get the list of all the KDsubjects stored in the database
-router.get("/subjects", getSubjects);
+router.get("/subjects",verifyToken, getSubjects);
 
 //---------to get all the chapters related to a single kdsubject---------------------//
-router.get("/chapters/:subjecttitle", getChapters);
+router.get("/chapters/:subjecttitle",verifyToken, getChapters);
 
 //--------------to get all the topics realted to the single chapter------------------//
-router.get("/topics/:chaptertitle", getTopics);
+router.get("/topics/:chaptertitle",verifyToken, getTopics);
+
+//===============update routes starts from here===========================//
+//----------------update route for kdsubject---------------------//
+router.put('/subject/:subjectid',verifyToken, editSubject)
+
+//=================update route for kd chapter=========================//
+router.put('/chapter/:chapterid' ,verifyToken, editChapter)
+//========================update route for kd page =====================//
+router.put('/page/:pageid',verifyToken, editPage)
+//====================update route for topic===========================//
+router.put('/topic/:topicid',verifyToken, editTopic)
+//--------------------update route for kd section================//
+router.put('/section/:sectionid' ,verifyToken ,editSection)
+
+//---------------delete routes start from here-------------------------------------//
+//------------delete route for subject---------------------//
+router.delete('/subject/:subjectid' ,verifyToken, deleteSubject)
+
+//---------------delete route for chapter--------------------//
+router.delete('/chapter/:chapterid' ,verifyToken, deleteChapter) 
+
+//---------delete route for topic---------------------------//
+router.delete('/topic/:topicid' ,verifyToken, deleteTopic)
+
+//---------delete route for page----------------------//
+router.delete('/page/:pageid' ,verifyToken, deletePage)
+
+//----------delete route for section------------------//
+router.delete('/section/:sectionid' ,verifyToken, deleteSection)
+
+
 
 module.exports = router;

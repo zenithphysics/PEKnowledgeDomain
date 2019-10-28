@@ -1,19 +1,22 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const topicSchema = require("../kdtopic").schema;
+
 const chapterSchema = new Schema({
-  subjectId: {
+  subjectId: { 
     type: String
   },
-  Title: {
+  chapterTitle: {
     type: String
   },
   Description: {
     type: String
   },
-  Topics: {
-    type: Array
-  }
+  subjectTitle:{
+   type:String
+  },
+  Topics: [topicSchema]
 });
 
 const Chapter = mongoose.model("chapter", chapterSchema);

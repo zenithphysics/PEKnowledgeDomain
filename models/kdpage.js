@@ -1,13 +1,13 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const sectionSchema = require("./kdsection").schema;
+
 const kdPageSchema = new Schema({
   id: {
     type: Schema.Types.ObjectId
   },
-  sections: {
-    type: Array
-  },
+  sections: [sectionSchema],
   topic_title: {
     type: String
   },

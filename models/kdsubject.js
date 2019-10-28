@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const kdChapter = require("./kdchapter");
-let kdChapterSchema = kdChapter.schema;
+const kdChapterSchema = require("./kdchapter").schema;
 
 const kdSubjectSchema = new Schema({
   id: {

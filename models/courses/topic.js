@@ -1,17 +1,18 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-//here we need to import Knowledge Domain Schema object for type Array
-
 const TopicSchema = new Schema({
   chapterId: {
-    type: String
-  },
-  Title: {
+    type: String 
+  }, 
+  topicTitle: {
     type: String
   },
   Description: {
     type: String
+  },
+  chapterTitle:{
+   type:String
   },
   learnpage: {
     type: Array
