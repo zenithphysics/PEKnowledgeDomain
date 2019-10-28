@@ -187,7 +187,54 @@ exports.addPage = (req, res) => {
 
 //--------------------add sections function---------------//
 exports.addSection = (req, res) => {
-   
+   Section.findOne({page_title:req.body.page_title})
+   .then((section) => {
+          if(!section) {
+            res.status(404).json({message: 'not found!!'})
+          }
+       const newSection = {
+         section_title: req.body.section_title,
+         page_title: req.body.page_title,
+         
+       }
+       if(section_type === 'videos') {
+         newSection.section_type.videos.section_name = req.body.section_type
+         newSection.section_type.videos.link = req.body.link
+       }
+       if(section_type === 'theory_image') {
+          newSection.section_type.theory_img.section_name = req.body.section_type
+          newSection.section_type.theory_img.img_path = req.body.img_path
+       }
+       if(section_type === 'theoryrichtext') {
+            newSection.section_type.theoryrich_text.section_name = req.body.section_type
+            newSection.section_type.theoryrich_text.text_data = req.body.text_data
+       }
+       if(section_type === 'quiz') {
+              newSection.section_type.quiz.section_name = req.body.section_type
+              newSection.section_type.quiz.questionsimg =  req.body.questionsimg
+              newSection.section_type.quiz.ansimg = req.body.answerimg
+              newSection.section_type.quiz.answerkey = req.body.answerkey
+              newSection.section_type.quiz.videoSolution.URL = req.body.videoSolutionURL
+       }
+       if(section_type === 'assignment') {
+            newSection.section_type.assignment.section_name = req.body.section_type
+            newSection.section_type.assignment.questionsimg = req.body.questionsimg
+            newSection.section_type.assignment.ansimg = req.body.answerimg
+            newSection.section_type.assignment.videoSolution.URL = req.body.videoSolutionURL
+       }
+       new Section(newSection).save()
+       .then((section) => {
+          Section.findOne({section_title: req.body.section_title})
+          .then((section) => {
+             Page.findOneAndUpdate({page_title: req.body.page_title}, { $push: { Sections: section._id } }, { new: true })
+             .then(data => res.json(data))
+              .catch(err => console.log(err));
+          })
+          .catch(err => console.log(err));
+       })
+       .catch(err => console.log(err));
+   })
+  
 };
 
 //----------------get all subjects in database--------------//
@@ -265,7 +312,11 @@ exports.deletePage = (req, res) => {
 exports.deleteSection = (req, res) => {
   Section.remove({ _id: req.params.sectionid }).then(() => {
     res.status(200).json("section deleted sucessfully!!");
-  });
+  })
+  .catch((err) => {
+      console.log(err)
+      res.status(400).json({message:'error occured'})
+  })
 };
 
 //==========all the updates routes start from here================//
@@ -357,10 +408,46 @@ exports.editTopic = (req, res) => {
 //=================edit route for section-----------------//
 exports.editSection = (req, res) => {
   Section.findOne({ _id: req.params.sectionid })
-    .then(section => {
-      res.status(200).json("needed to be implemented!!");
+  .then((section) => {
+    section.section_title =  req.body.section_title
+    section.page_title = req.body.page_title
+    if(section_type === 'videos') {
+      section.section_type.videos.section_name = req.body.section_type
+      section.section_type.videos.link = req.body.link
+    }
+    if(section_type === 'theory_image') {
+      section.section_type.theory_img.section_name = req.body.section_type
+      section.section_type.theory_img.img_path = req.body.img_path
+   }
+   if(section_type === 'theoryrichtext') {
+    section.section_type.theoryrich_text.section_name = req.body.section_type
+    section.section_type.theoryrich_text.text_data = req.body.text_data
+   }
+   if(section_type === 'quiz') {
+    section.section_type.quiz.section_name = req.body.section_type
+    section.section_type.quiz.questionsimg =  req.body.questionsimg
+    section.section_type.quiz.ansimg = req.body.answerimg
+    section.section_type.quiz.answerkey = req.body.answerkey
+    section.section_type.quiz.videoSolution.URL = req.body.videoSolutionURL
+   }
+   if(section_type === 'assignment') {
+    section.section_type.assignment.section_name = req.body.section_type
+    section.section_type.assignment.questionsimg = req.body.questionsimg
+    section.section_type.assignment.ansimg = req.body.answerimg
+    section.section_type.assignment.videoSolution.URL = req.body.videoSolutionURL
+    }
+    section.save()
+    .then((editedSection) => {
+        res.status(200).json(editedSection)
     })
-    .catch(() => {
-      res.status(404).json(err);
-    });
-};
+    .catch((err) => {
+       console.log(err)
+       res.status(400).json({message:'error occured!'})
+    })
+  })
+  .catch((err) => {
+        console.log(err)
+        res.status(400).json({message:'error occured!!'})
+  })
+}
+///all the crud functionality for the admin end here///
