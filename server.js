@@ -46,7 +46,7 @@ app.use("/admin", adminRoutes);
 app.use('/courseadmin' , CourseAdminRoutes)
 
 app.get("/", (req, res) => {
-  res.render("Subject/addsubject");
+  res.send('you are seeing the welocme page!!')
 })
 
 
