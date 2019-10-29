@@ -35,18 +35,18 @@ router.get("/logout", (req, res) => {
 });
 
 //----add a subject---------------//
-router.post("/addsubject",verifyToken, addSubject);
+router.post("/addsubject", addSubject);
 
 //-------------add chapters-------------------//
-router.post("/addchapters",verifyToken, addChapter);
+router.post("/addchapters", addChapter);
 
 //add tpics to chapters-----------------------//
 router.post("/addtopics",verifyToken, addTopic);
 //---------------add pages to topics----------------------//
-router.post("/addpages",verifyToken, addPage);
+router.post("/addpages", addPage);
 
 //----------------add sections to pages-----------------------//
-router.post("/addsection",verifyToken, addSection);
+router.post("/addsection", addSection);
 
 //-----------starting with all the get routes from here--------------------------//
 
