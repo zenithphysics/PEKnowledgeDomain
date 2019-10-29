@@ -42,12 +42,12 @@ mongoose
     console.log(err);
   });
 
+  app.get("/", (req, res) => {
+    res.send('you are seeing the welocme page!!')
+  })
+  
 app.use("/admin", adminRoutes);
 app.use('/courseadmin' , CourseAdminRoutes)
-
-app.get("/", (req, res) => {
-  res.send('you are seeing the welocme page!!')
-})
 
 
 
