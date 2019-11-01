@@ -11,7 +11,7 @@ const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
 const {deleteSubject, deleteChapter, deleteTopic, deletePage, deleteSection} = require('../controllers/Admin')
 
 //controllers for all the update routes
-const {editSubject, editChapter, editPage, editTopic, editSection} = require('../controllers/Admin')
+const {editSubject, editChapter, editPage, editTopic, editSection, editPassword} = require('../controllers/Admin')
 
 //verifyToken utility
 const verifyToken = require("../utils/verifyToken");
@@ -35,18 +35,18 @@ router.get("/logout", (req, res) => {
 });
 
 //----add a subject---------------//
-router.post("/addsubject", addSubject);
+router.post("/addsubject",verifyToken, addSubject);
 
 //-------------add chapters-------------------//
-router.post("/addchapters", addChapter);
+router.post("/addchapters",verifyToken, addChapter);
 
 //add tpics to chapters-----------------------//
 router.post("/addtopics",verifyToken, addTopic);
 //---------------add pages to topics----------------------//
-router.post("/addpages", addPage);
+router.post("/addpages",verifyToken, addPage);
 
 //----------------add sections to pages-----------------------//
-router.post("/addsection", addSection);
+router.post("/addsection",verifyToken, addSection);
 
 //-----------starting with all the get routes from here--------------------------//
 
@@ -71,7 +71,8 @@ router.put('/page/:pageid',verifyToken, editPage)
 router.put('/topic/:topicid',verifyToken, editTopic)
 //--------------------update route for kd section================//
 router.put('/section/:sectionid' ,verifyToken ,editSection)
-
+//---------------------update route for change password----------------------//
+router.put('/changepassword',verifyToken,editPassword)
 //---------------delete routes start from here-------------------------------------//
 //------------delete route for subject---------------------//
 router.delete('/subject/:subjectid' ,verifyToken, deleteSubject)
