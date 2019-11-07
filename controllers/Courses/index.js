@@ -23,18 +23,18 @@ exports.signUpCourseAdmin = (req,res,next) => {
          else {
              const newCourseAdmin = {
                email : req.body.email,
-               role : req.body.role
+               role : req.body.role,
              }
              bcrypt.hash(req.body.password, 10, (err, hashedPassword) => {
                   newCourseAdmin.password = hashedPassword
-                  
+                  new courseAdmin(newCourseAdmin).save()
+                  .then(() => {
+                    res.status(200).json({
+                        message:'admin added successfully!!'
+                      })
+                  })
              })
-             new courseAdmin(newCourseAdmin).save()
-             .then(() => {
-               res.status(200).json({
-                   message:'admin added successfully!!'
-                 })
-             })
+           
          }
   })
   .catch((err) => {
@@ -52,11 +52,12 @@ exports.loginCourseAdmin = (req,res,next) => {
          if(courseadmin) {
               bcrypt.compare(req.body.password, courseadmin.password, (err,hash)  => {
                     if(err) {
+                      console.log(err)
                       return res.status(401).json({
                         message: 'unauthorized!!'
                       })
                     }else {
-                      jwt.sign({id:courseadmin._id}, jwtSecret.jwtKey, (err, Token) => {
+                      jwt.sign({id:courseadmin._id}, jwtSecret.jwtKey, (err, token) => {
                         localStorage.setItem("loginToken", token)
                         res.status(200).json({
                           "access-token": token,
