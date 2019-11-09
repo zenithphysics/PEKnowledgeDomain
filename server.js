@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 
 mongoose
-  .connect( keys.mongodb.dbURI , { useUnifiedTopology: true, useNewUrlParser: true })
+  .connect( keys.mongodb.dbURI , { useUnifiedTopology: true, useNewUrlParser: false })
   .then(() => console.log( 'connected to mongodb'))
   .catch(err => {
     console.log(err);
