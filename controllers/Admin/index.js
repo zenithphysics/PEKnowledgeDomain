@@ -66,7 +66,7 @@ exports.loginAdmin = async (req, res, next) => {
             localStorage.setItem("loginToken", token);
             // res.header("access-token", token);
             res.status(200).json({
-              "access-token": token,
+              "accessToken": token,
               registeredEmail: adminObject.email,
               message: "Login Success",
               status: 200
