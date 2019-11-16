@@ -152,7 +152,7 @@ exports.addTopic = (req, res) => {
   //console.log(req.body.topicTitle);
   const authData = req.authData
   if(authData) {
-    kdChapter.findOne({ chapterTitle: req.body.chapterTitle }).then(chapter => {
+    kdChapter.findOne({ _id: req.params.chapterId }).then(chapter => {
       if (!chapter) {
         res.status(404).json({ err: "No Chapter found" });
       }
@@ -165,9 +165,9 @@ exports.addTopic = (req, res) => {
       new kdTopic(newTopic)
         .save()
         .then(topic => {
-          kdTopic.findOne({ title: req.body.chapterTitle })
+          kdTopic.findOne({ chapter_id: req.params.chapterId })
             .then(topic => {
-              kdChapter.findOneAndUpdate({ chapterTitle: req.body.chapterTitle }, { $push: { Topics: topic._id } }, { new: true })
+              kdChapter.findOneAndUpdate({ _id: req.params.chapterId }, { $push: { Topics: topic._id } }, { new: true })
                 .then(data => res.json(data))
                 .catch(err => console.log(err));
             })
