@@ -112,7 +112,7 @@ exports.addChapter = (req, res) => {
   const authData = req.authData
   if(authData) {
     console.log(authData)
-    kdSubject.findOne({ subject_title: req.body.subjectTitle }).then(subject => {
+    kdSubject.findOne({ _id: req.params.subjectId }).then(subject => {
       if (!subject) {
         res.status(404).json({ err: "No Subject found!!!" });
       }
@@ -125,10 +125,16 @@ exports.addChapter = (req, res) => {
       new kdChapter(newChapter)
         .save()
         .then(chapter => {
-          kdChapter.findOne({ subject_title: req.body.subjectTitle })
+          kdChapter.findOne({ subject_id: req.params.subjectId })
             .then(chapter => {
-              kdSubject.findOneAndUpdate({ subject_title: req.body.subjectTitle }, { $push: { Chapters: chapter._id } }, { new: true })
-                .then(data => res.json(data))
+              console.log(chapter._id)
+              kdSubject.findOneAndUpdate({ _id: req.body.subjectId })
+                .then((kdsub) => {
+                  console.log(kdsub)
+                  kdsub.chapters.unshift(chapter._id)
+                  console.log(kdsub)
+                  kdsub.save().then(() => res.json({message:'sucess!!'})).catch(err => console.log(err))
+                })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
