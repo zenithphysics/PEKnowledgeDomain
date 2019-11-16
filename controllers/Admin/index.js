@@ -190,7 +190,7 @@ exports.addPage = (req, res) => {
   //console.log(req.body.topicTitle);
   const authData = req.authData
   if(authData) {
-    kdTopic.findOne({ topic_title: req.body.topicTitle }).then(topics => {
+    kdTopic.findOne({ _id: req.params.topicId}).then(topics => {
       if (!topics) {
         res.status(404).json({ err: "No Chapter found" });
       }
@@ -205,10 +205,14 @@ exports.addPage = (req, res) => {
       new kdPage(newPage)
         .save()
         .then(page => {
-          kdPage.findOne({ page_title: req.body.page_title })
+          kdPage.findOne({ topic_id: req.params.topicId })
             .then(page => {
-              kdTopic.findOneAndUpdate({ topic_title: req.body.topicTitle }, { $push: { Pages: page._id } }, { new: true })
-                .then(data => res.json(data))
+              kdTopic.findOneAndUpdate({ _id: req.params.topicId })
+                .then((kdtop) => {
+                  kdtop.pages.unshift(page._id)
+                  //  console.log(kdsub)
+                    kdtop.save().then(() => res.json({message:'sucess!!'})).catch(err => console.log(err))
+                })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));

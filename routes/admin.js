@@ -43,7 +43,7 @@ router.post("/addchapters/:subjectId",verifyToken, addChapter);
 //add tpics to chapters-----------------------//
 router.post("/addtopics/:chapterId",verifyToken, addTopic);
 //---------------add pages to topics----------------------//
-router.post("/addpages",verifyToken, addPage);
+router.post("/addpages/:topicId",verifyToken, addPage);
 
 //----------------add sections to pages-----------------------//
 router.post("/addsection",verifyToken, addSection);
