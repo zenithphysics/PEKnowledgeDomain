@@ -301,7 +301,7 @@ exports.getSubjects = (req, res) => {
 exports.getChapters = (req, res) => {
   const authData = req.authData
   if(authData) {
-    kdChapter.find({ subject_title: req.params.subjecttitle })
+    kdChapter.find({_id: req.params.subjectId})
     .then(chapters => {
       res.status(200).json(chapters);
     })
