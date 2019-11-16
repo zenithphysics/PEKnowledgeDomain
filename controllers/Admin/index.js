@@ -96,7 +96,7 @@ exports.addSubject = (req, res) => {
       .save()
       .then(newSubject => {
         console.log(newSubject)
-        res.status(200).json(newSubject)
+        res.status(200).json({newSubject},{message:'sucess'})
       })
       .catch(err => {
         console.log(err);
