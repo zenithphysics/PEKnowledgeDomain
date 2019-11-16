@@ -338,6 +338,26 @@ exports.getTopics = (req, res) => {
    res.status(401).json({message: 'Unauthorized!!'})
  }
 };
+
+//---------------get all pages of a particular topics in the database------------//
+exports.getPages = (req, res) => {
+  const authData = req.authData
+  if(authData) {
+    kdPage.find({ topic_id: req.params.topicId })
+    .then(pages => {
+      res.status(200).json(pages);
+    })
+    .catch(err => {
+      res.status(400).json(err);
+    });
+  }
+ else {
+   res.status(401).json({message: 'Unauthorized!!'})
+ }
+};
+
+
+
 //-------------all the delete routes start from here---------------//
 //=---------------delete subject route-------------------------//
 exports.deleteSubject = (req, res) => {

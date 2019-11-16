@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const { signUpAdmin, loginAdmin, addSubject, addChapter, addTopic, addPage, addSection } = require("../controllers/Admin");
 
 //controllers for get requests
-const { getSubjects, getChapters, getTopics } = require("../controllers/Admin");
+const { getSubjects, getChapters, getTopics, getPages } = require("../controllers/Admin");
 
 //controllers for all delete requests
 const {deleteSubject, deleteChapter, deleteTopic, deletePage, deleteSection} = require('../controllers/Admin')
@@ -58,7 +58,8 @@ router.get("/chapters/:subjectId",verifyToken, getChapters);
 
 //--------------to get all the topics realted to the single chapter------------------//
 router.get("/topics/:chapterId",verifyToken, getTopics);
-
+//--------------------to get all the pages related toa single topic-------------------//
+router.get('/pages/:topicId',verifyToken, getPages)
 //===============update routes starts from here===========================//
 //----------------update route for kdsubject---------------------//
 router.put('/subject/:subjectid',verifyToken, editSubject)
