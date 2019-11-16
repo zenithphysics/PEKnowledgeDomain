@@ -167,8 +167,12 @@ exports.addTopic = (req, res) => {
         .then(topic => {
           kdTopic.findOne({ chapter_id: req.params.chapterId })
             .then(topic => {
-              kdChapter.findOneAndUpdate({ _id: req.params.chapterId }, { $push: { Topics: topic._id } }, { new: true })
-                .then(data => res.json(data))
+              kdChapter.findOneAndUpdate({ _id: req.params.chapterId })
+                .then((kdchap) => {
+                  kdchap.topics.unshift(topic._id)
+                //  console.log(kdsub)
+                  kdchap.save().then(() => res.json({message:'sucess!!'})).catch(err => console.log(err))
+                })
                 .catch(err => console.log(err));
             })
             .catch(err => console.log(err));
@@ -318,7 +322,7 @@ exports.getChapters = (req, res) => {
 exports.getTopics = (req, res) => {
   const authData = req.authData
   if(authData) {
-    kdTopic.find({ title: req.params.chaptertitle })
+    kdTopic.find({ chapter_id: req.params.chapterId })
     .then(topics => {
       res.status(200).json(topics);
     })
