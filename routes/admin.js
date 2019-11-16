@@ -38,7 +38,7 @@ router.get("/logout", (req, res) => {
 router.post("/addsubject",verifyToken, addSubject);
 
 //-------------add chapters-------------------//
-router.post("/addchapters",verifyToken, addChapter);
+router.post("/addchapters/:subjectId",verifyToken, addChapter);
 
 //add tpics to chapters-----------------------//
 router.post("/addtopics",verifyToken, addTopic);
@@ -54,10 +54,10 @@ router.post("/addsection",verifyToken, addSection);
 router.get("/subjects",verifyToken, getSubjects);
 
 //---------to get all the chapters related to a single kdsubject---------------------//
-router.get("/chapters/:subjecttitle",verifyToken, getChapters);
+router.get("/chapters/:subjectId",verifyToken, getChapters);
 
 //--------------to get all the topics realted to the single chapter------------------//
-router.get("/topics/:chaptertitle",verifyToken, getTopics);
+router.get("/topics/:chapterId",verifyToken, getTopics);
 
 //===============update routes starts from here===========================//
 //----------------update route for kdsubject---------------------//
