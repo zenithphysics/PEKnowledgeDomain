@@ -227,17 +227,18 @@ exports.addPage = (req, res) => {
 
 //--------------------add sections function---------------//
 exports.addSection = (req, res) => {
-  
+ 
   const authData = req.authData
   if(authData) {
-    kdPage.findOne({page_title:req.body.page_title})
-    .then((section) => {
-           if(!section) {
+    kdPage.findOne({_id: req.params.pageId})
+    .then((page) => {
+           if(!page) {
              res.status(404).json({message: 'not found!!'})
            }
         const newSection = {
           section_title: req.body.section_title,
           page_title: req.body.page_title,
+          page_id: page._id
         }
         if(req.body.section_type == 'videos') {
           newSection.section_name = req.body.section_type
@@ -267,13 +268,24 @@ exports.addSection = (req, res) => {
              newSection.assignment.answerimg = req.body.answerimg
              newSection.assignment.videoSolutionURL = req.body.videoSolutionURL
         }
-        console.log(newSection)
+        //console.log(newSection)
         new kdSection(newSection).save()
         .then((section) => {
-           kdSection.findOne({section_title: req.body.section_title})
+           kdSection.findOne({page_id : req.params.pageId})
            .then((section) => {
-              kdPage.findOneAndUpdate({page_title: req.body.page_title}, { $push: { Sections: section._id } }, { new: true })
-              .then(data => res.json(data))
+              kdPage.findOne({_id: req.params.pageId})
+              .then((kdpg) => {
+                    kdpg.sections.unshift(section._id)
+                    kdpg.save()
+                    .then(() => {
+                       res.status(200).json({
+                         message: 'section added successfully'
+                       })
+                    })
+                    .catch((err) => {
+                        console.log('Oops error occured' + err)
+                    })
+              })
                .catch(err => console.log(err));
            })
            .catch(err => console.log(err));
